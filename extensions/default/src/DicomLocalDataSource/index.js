@@ -150,14 +150,13 @@ function createDicomLocalApi(dicomLocalConfig) {
                 SOPInstanceUID,
               } = instance;
 
-              instance.imageId = imageId;
               const numberOfFrames = instance.NumberOfFrames || 1;
               // Process all frames consistently, whether single or multiframe
               for (let i = 0; i < numberOfFrames; i++) {
                 const frameNumber = i + 1;
                 const frameImageId = implementation.getImageIdsForInstance({
                   instance,
-                  frame: frameNumber,
+                  frame: numberOfFrames > 1 ? frameNumber : 0,
                 });
                 // Add imageId specific mapping to this data as the URL isn't necessarily WADO-URI.
                 metadataProvider.addImageIdToUIDs(frameImageId, {
@@ -166,6 +165,10 @@ function createDicomLocalApi(dicomLocalConfig) {
                   SOPInstanceUID,
                   frameNumber: numberOfFrames > 1 ? frameNumber : undefined,
                 });
+
+                //Setting updated framesImageId as imageId and url of the instance
+                instance.imageId = frameImageId;
+                instance.url = frameImageId;
               }
             });
 
@@ -190,6 +193,10 @@ function createDicomLocalApi(dicomLocalConfig) {
     getImageIdsForDisplaySet(displaySet) {
       const images = displaySet.images;
       const imageIds = [];
+
+      if (displaySet.imageIds) {
+        return displaySet.imageIds;
+      }
 
       if (!images) {
         return imageIds;

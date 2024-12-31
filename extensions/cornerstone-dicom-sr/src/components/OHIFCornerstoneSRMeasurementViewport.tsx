@@ -202,8 +202,8 @@ function OHIFCornerstoneSRMeasurementViewport(props: withAppTypes) {
       return null;
     }
 
-    const initialImageIndex = activeImageDisplaySetData.images.findIndex(
-      image => image.imageId === measurement.imageId
+    const initialImageIndex = activeImageDisplaySetData.imageIds.findIndex(
+      imageId => imageId === measurement.imageId
     );
 
     return (
