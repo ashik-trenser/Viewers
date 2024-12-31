@@ -167,8 +167,8 @@ function createDicomLocalApi(dicomLocalConfig) {
                 });
 
                 //Setting updated framesImageId as imageId and url of the instance
-                instance.imageId = frameImageId;
-                instance.url = frameImageId;
+                instance.imageId = numberOfFrames === 1 ? frameImageId : imageId;
+                instance.url = numberOfFrames === 1 ? frameImageId : imageId;
               }
             });
 
